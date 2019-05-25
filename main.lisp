@@ -6,7 +6,7 @@
   (lambda (params correct)
     (let* ((ans (apply f params))
            (comment (if (equalp ans correct) "" (format nil " (Correct answer ~A)" correct))))
-      (format t "  ~A -> ~A~A~%" params ans comment))))
+      (format t "  ~{~A~^ ~} -> ~A~A~%" params ans comment))))
 
 (defun problem (num f tests)
   (format t "Problem ~2,'0D:~%" num)
@@ -25,4 +25,5 @@
   (problem 5 'my-rev '((((3 1 4 9)) (9 4 1 3))
                        ((())     ())))
   (problem 6 'palindrome '((((1 2 3 2 1)) t)
-                           (((1 2 4 2 3)) nil))))
+                           (((1 2 4 2 3)) nil)))
+  (problem1 7 'my-flatten '((1 2 (3 2) () 1 8 (1 (2 3)))) '(1 2 3 2 1 8 1 2 3)))

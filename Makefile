@@ -3,10 +3,10 @@ BIN=bin
 all: $(BIN)/main
 
 run: main.lisp
-	sbcl --quit --load $< --eval "(main)"
+	ros --load $< --eval "(main)"
 
 $(BIN)/%: %.lisp | $(BIN)
-	sbcl --non-interactive --load $< --eval "(sb-ext:save-lisp-and-die \"$@\" :toplevel #'$(basename $<) :executable t)"
+	ros --load $< --eval "(sb-ext:save-lisp-and-die \"$@\" :toplevel #'$(basename $<) :executable t)"  # Assumes SBCL
 
 $(BIN):
 	mkdir $@

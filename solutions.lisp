@@ -29,3 +29,11 @@
 (defun palindrome (l)
   "P06 Find out whether a list is a palindrome"
   (every '= l (my-rev l)))
+
+(defun layered-cons (acc l)
+  (if (and (atom l) (not (null l)))
+    (cons l acc)
+    (reduce 'layered-cons l :initial-value acc)))
+(defun my-flatten (l)
+  "P07 Flatten a nested list structure"
+  (my-rev (layered-cons '() l)))
