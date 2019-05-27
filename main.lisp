@@ -5,7 +5,7 @@
 (defun single-test (f)
   (lambda (params correct)
     (let* ((ans (apply f params))
-           (comment (if (equalp ans correct) "" (format nil " (Correct answer ~A)" correct))))
+           (comment (if (equalp ans correct) "" (format nil " [Correct answer ~A]" correct))))
       (format t "  ~{~A~^ ~} -> ~A~A~%" params ans comment))))
 
 (defun problem (num f tests)
@@ -42,4 +42,16 @@
   (problem 19 'rotate '((((a b c d e f g h) 3)  (d e f g h a b c))
                         (((a b c d e f g h) -2) (g h a b c d e f))))
   (problem1 20 'remove-at '((a b c d) 2) '(a c d))
-  (problem1 21 'insert-at '(alfa (a b c d) 2) '(a alfa b c d)))
+  (problem1 21 'insert-at '(alfa (a b c d) 2) '(a alfa b c d))
+  (problem1 22 'range '(4 9) '(4 5 6 7 8 9))
+  (problem1 23 'rnd-select '((a b c d e f g h) 3) '(e a c))  ; Based on random
+  (problem1 24 'lotto-select '(6 49) '(35 38 4 27 33 17))    ; Based on random
+  (problem1 25 'rnd-permu '((a b c d e f)) '(d a c b e f))   ; Based on random
+  (problem1 26 'combination '(3 (a b c d e f)) "is long")
+  (let* ((l       '(a b c d e f))
+         (correct 120)
+         (expr    `(length (combination 3 ',l)))
+         (ans     (eval expr))
+         (comment (if (= ans correct) "" (format nil " [Correct answer ~A]" correct))))
+    (format t "* C(~D,3) = ~A = ~A~A~%" (length l) expr ans comment))
+  )

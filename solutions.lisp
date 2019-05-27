@@ -98,9 +98,9 @@
   "P14 Duplicate the elements of a list"
   (repli l 2))
 
-(defun ~range (i n) (when (< i n) (cons i (~range (1+ i) n))))
-(defun range (n) (~range 0 n))
-(defun enumerate (l) (mapcar 'list (range (my-len l)) l))
+(defun ~range1 (i n) (when (< i n) (cons i (~range1 (1+ i) n))))
+(defun range1 (n) (~range1 0 n))
+(defun enumerate (l) (mapcar 'list (range1 (my-len l)) l))
 (defun drop (l n)
   "P16 Drop every N'th element from a list"
   (mapcar '2nd (remove-if (lambda (v) (= (rem (1+ (car v)) n) 0)) (enumerate l))))
@@ -130,3 +130,33 @@
   "P21 Insert an element at a given position into a list"
   (let ((sl (split l (1- k))))
     (apply 'append (list (car sl) (list val) (2nd sl)))))
+
+(defun range (start end)
+  "P22 Create a list containing all integers within a given range"
+  (mapcar (lambda (n) (+ n start)) (range1 (1+ (- end start)))))
+
+(defun rnd-select (l n)
+  "P23 Extract a given number of randomly selected elements from a list"
+  (let ((i (random (my-len l))))
+    (when (> n 0) (cons (element-at l i) (rnd-select (remove-at l i) (1- n))))))
+
+(defun lotto-select (n m)
+  "P24 Lotto: Draw N different random numbers from the set 1..M"
+  (rnd-select (range 1 m) n))
+
+(defun rnd-permu (l)
+  "P25 Generate a random permutation of the elements of a list"
+  (rnd-select l (my-len l)))
+
+(defun select-one (l)
+  "For list (a b c...) constructs pairs (a (b c...)), (b (a c...)), and so on"
+  (mapcar (lambda (nv) (list (2nd nv) (remove-at l (1+ (car nv))))) (enumerate l)))
+(defun ~combination (i prev n l)
+    (when (not (null l))
+      (if (= i n) (list prev)
+        (when (< i n) (apply 'append (mapcar
+          (lambda (selected-rest) (~combination (1+ i) (cons (car selected-rest) prev) n (2nd selected-rest)))
+          (select-one l)))))))
+(defun combination (n l)
+  "P26 Generate the combinations of K distinct objects chosen from the N elements of a list"
+  (mapcar 'my-rev (~combination 0 '() n l)))
