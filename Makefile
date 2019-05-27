@@ -1,6 +1,7 @@
 BIN=bin
 
 all: $(BIN)/main
+.PHONY: all run clean
 
 run: main.lisp
 	ros --load $< --eval "(main)"
